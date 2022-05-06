@@ -9,15 +9,15 @@ const submitFeedback = new SubmitFeedbackUseCase(
 )
 
 describe('SubmitFeedback', () => {
-  it('should be able to submit a feedback', () => {
+  it('should be able to submit a feedback', async () => {
     expect(submitFeedback.execute({
       type: 'BUG',
       comment: "teste",
       screenshot: 'data:image/png;base64fadsfasdfas'
     })).resolves.not.toThrow()
 
-    expect(createFeedbackSpy).toHaveBeenCalled()
-    expect(sendMailSpy).toHaveBeenCalled()
+    await expect(createFeedbackSpy).toHaveBeenCalled()
+    await expect(sendMailSpy).toHaveBeenCalled()
   })
 
   it('should not be able to submit a feedback without a type', () => {
