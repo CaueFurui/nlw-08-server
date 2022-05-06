@@ -1,3 +1,4 @@
+import { MailAdapter } from "../adapters/MailAdapter"
 import { FeedbacksRepository } from "../repositories/FeedbacksRepository"
 
 export enum FeedbackType {
@@ -14,7 +15,10 @@ interface SubmitFeedbackUseCaseRequest {
 
 export class SubmitFeedbackUseCase {
 
-  constructor(private feedbacksRepository: FeedbacksRepository) {}
+  constructor(
+    private feedbacksRepository: FeedbacksRepository,
+    private mailAdapter: MailAdapter,
+  ) {}
 
   async execute(request: SubmitFeedbackUseCaseRequest) {
     const { type, comment, screenshot } = request
@@ -23,6 +27,16 @@ export class SubmitFeedbackUseCase {
       type,
       comment,
       screenshot
+    })
+
+    await this.mailAdapter.sendEmail({
+      subject: 'Novo feedback',
+      body: [
+        `<div style="font-family: sans-serif; font-size: 16px; color: #111;">`,
+        `<p>Tipo do feedback: ${type}</p>`,
+        `<p>Tipo do comentário: ${comment}</p>`,
+        `</div>`,
+      ].join('\n')
     })
     
   }
