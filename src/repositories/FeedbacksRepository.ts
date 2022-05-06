@@ -1,11 +1,5 @@
-enum FeedbackType {
-  BUG = 'BUG',
-  IDEA = 'IDEA',
-  OTHER = 'OTHER'
-}
-
 export interface FeedbackCreateData {
-  type: FeedbackType
+  type: string
   comment: string
   screenshot?: string
 }
